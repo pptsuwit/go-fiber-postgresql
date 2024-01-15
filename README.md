@@ -5,10 +5,9 @@
 [![pptsuwit](https://avatars.githubusercontent.com/u/90542847?v=4)](https://github.com/pptsuwit)
 
 ## Installation
-
-requires [Golang](https://go.dev/) v1.21.3+ to run.
-requires [Air live reload](https://github.com/cosmtrek/air)
-requires [Postgresql](https://www.postgresql.org/) v16 for database.
+- requires [Golang](https://go.dev/) v1.21.3+ to run.
+- requires [Air live reload](https://github.com/cosmtrek/air)
+- requires [Postgresql](https://www.postgresql.org/) v16 for database.
 ## Config
 
 Copy example environment.
