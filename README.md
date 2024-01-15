@@ -8,7 +8,7 @@
 
 requires [Golang](https://go.dev/) v1.21.3+ to run.
 requires [Air live reload](https://github.com/cosmtrek/air)
-
+requires [Postgresql](https://www.postgresql.org/) v16 for database.
 ## Config
 
 Copy example environment.
@@ -16,9 +16,8 @@ Copy example environment.
 ```sh
 cp example.env.yaml env.yaml
 ```
-
-Change environments .env file
-
+`Create database`
+`Change environments .env file`
 ```sh
 app:
   port: 8000 # debug port
