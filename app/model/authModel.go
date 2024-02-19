@@ -8,8 +8,12 @@ type Login struct {
 }
 
 type LoginResponse struct {
-	Username string `json:"username"`
-	Token    string `json:"token"`
+	Token string       `json:"token"`
+	User  UserResponse `json:"user"`
+}
+type LoginWithUser struct {
+	Token string `json:"token"`
+	User  User
 }
 
 type Register struct {

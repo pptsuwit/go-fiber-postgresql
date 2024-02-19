@@ -26,7 +26,7 @@ func (r customerRepository) GetAll(page model.Pagination) ([]model.Customer, err
 	offset := page.Page * limit
 
 	entities := []model.Customer{}
-	tx := r.db.Limit(limit).Offset(offset).Preload(clause.Associations).Find(&entities)
+	tx := r.db.Limit(limit).Offset(offset).Preload(clause.Associations).Order("id desc").Find(&entities)
 	if tx.Error != nil {
 		return nil, tx.Error, 0
 	}

@@ -21,7 +21,7 @@ func New(db *gorm.DB) *gorm.DB {
 	)
 
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{}, &gorm.Config{
-		// TranslateError: true,
+		TranslateError: true,
 		// Logger: new(model.SqlLogger),
 		// DryRun: true,
 	})
@@ -32,6 +32,7 @@ func New(db *gorm.DB) *gorm.DB {
 	db.AutoMigrate(
 		model.Customer{},
 		model.User{},
+		model.Asset{},
 	)
 	return db
 }

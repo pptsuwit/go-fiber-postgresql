@@ -12,12 +12,16 @@ import (
 func UserRouter(router fiber.Router, db *gorm.DB) {
 
 	userRepository := repository.NewUserRepositoryDB(db)
+	assetRepository := repository.NewAssetRepositoryDB(db)
+
 	userService := service.NewUserService(userRepository)
-	userController := controller.NewUserController(userService)
+	assetService := service.NewAssetService(assetRepository)
+
+	userController := controller.NewUserController(userService, assetService)
 	router.Get("/user", userController.GetUsers)
 	router.Get("/user/:id", userController.GetUser)
 	router.Post("/user", userController.CreateUser)
-	router.Put("/user/:id", userController.UpdateUser)
+	router.Put("/user", userController.UpdateUser)
 	router.Delete("/user/:id", userController.DeleteUser)
 
 }

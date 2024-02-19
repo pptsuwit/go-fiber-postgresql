@@ -36,7 +36,11 @@ func (h authController) Login(c *fiber.Ctx) error {
 		utils.HandleValidationError(c, err)
 		return err
 	}
-	data, err := h.services.Login(&request)
+	asset := model.UserAsset{
+		HostName:   c.BaseURL(),
+		FolderName: "avatars",
+	}
+	data, err := h.services.Login(&request, asset)
 	if err != nil {
 		utils.HandleError(c, errs.NewValidationError(err.Error()))
 		return err

@@ -10,22 +10,23 @@ import (
 	"github.com/spf13/viper"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type authRepository struct {
 	db *gorm.DB
 }
 type AuthRepository interface {
-	Login(*model.Login) (*model.LoginResponse, error)
+	Login(*model.Login) (*model.LoginWithUser, error)
 	Register(*model.Register) (*model.UserResponse, error)
 }
 
 func NewAuthRepositoryDB(db *gorm.DB) authRepository {
 	return authRepository{db: db}
 }
-func (r authRepository) Login(login *model.Login) (*model.LoginResponse, error) {
+func (r authRepository) Login(login *model.Login) (*model.LoginWithUser, error) {
 	entity := model.User{}
-	tx := r.db.Where("username = ?", login.Username).First(&entity)
+	tx := r.db.Where("username = ?", login.Username).Preload(clause.Associations).First(&entity)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -34,11 +35,10 @@ func (r authRepository) Login(login *model.Login) (*model.LoginResponse, error) 
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
 		return nil, errs.New("password mismatch")
 	}
-
 	token, err := generateToken(entity.ID)
-	response := model.LoginResponse{
-		Username: entity.Username,
-		Token:    token,
+	response := model.LoginWithUser{
+		Token: token,
+		User:  entity,
 	}
 	return &response, nil
 }

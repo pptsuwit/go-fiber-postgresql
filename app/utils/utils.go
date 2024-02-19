@@ -1,15 +1,21 @@
 package utils
 
 import (
+	"encoding/base64"
+	"errors"
 	"fmt"
 	"go-fiber-crud/app/model"
 	"go-fiber-crud/app/utils/errs"
+	"math/rand"
+	"os"
+	"path/filepath"
 
 	"net/http"
 	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/spf13/viper"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -85,4 +91,66 @@ func GetTotalPage(count, pageSize int) int {
 		totalPage = count
 	}
 	return totalPage
+}
+
+func ImageResizing() {}
+
+func RandomImageName(name string) string {
+	extension := GetExtension(name)
+	randName := base64.StdEncoding.EncodeToString([]byte(name))
+	randName += randStringBytesMaskImpr(3)
+	return randName + extension
+}
+func GetExtension(name string) string {
+	return filepath.Ext(name)
+}
+func randStringBytesMaskImpr(n int) string {
+	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	const (
+		letterIdxBits = 6                    // 6 bits to represent a letter index
+		letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
+		letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
+	)
+	b := make([]byte, n)
+	// A rand.Int63() generates 63 random bits, enough for letterIdxMax letters!
+	for i, cache, remain := n-1, rand.Int63(), letterIdxMax; i >= 0; {
+		if remain == 0 {
+			cache, remain = rand.Int63(), letterIdxMax
+		}
+		if idx := int(cache & letterIdxMask); idx < len(letterBytes) {
+			b[i] = letterBytes[idx]
+			i--
+		}
+		cache >>= letterIdxBits
+		remain--
+	}
+
+	return string(b)
+}
+
+func CheckFileExists(filePath string) bool {
+	_, error := os.Stat(filePath)
+	return errors.Is(error, os.ErrNotExist)
+}
+
+func CheckFolderExists(filePath string) (string, error) {
+	// path := filepath.Join(viper.GetString("app.asset"), filePath)
+	path := fmt.Sprintf("./%s/%s", viper.GetString("app.asset"), filePath)
+
+	err := os.MkdirAll(path, os.ModePerm)
+	if err != nil {
+		return "", err
+	}
+	return path, nil
+}
+
+func GetFilePath(path, name string) string {
+	return fmt.Sprintf("%s/%s", path, name)
+}
+func GetHostPath(host, folder, name string) string {
+	return fmt.Sprintf("%s/api/%s/%s/%s", host, viper.GetString("app.asset"), folder, name)
+}
+
+func DeleteFile(path string) {
+	os.Remove(path)
 }

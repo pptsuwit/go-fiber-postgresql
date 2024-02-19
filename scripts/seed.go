@@ -37,10 +37,12 @@ func main() {
 	db.Migrator().DropTable(
 		model.Customer{},
 		model.User{},
+		model.Asset{},
 	)
 	db.AutoMigrate(
 		model.Customer{},
 		model.User{},
+		model.Asset{},
 	)
 	mock.SeedUser(db)
 	mock.SeedCustomer(db)
