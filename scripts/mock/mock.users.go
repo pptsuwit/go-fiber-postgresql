@@ -9,16 +9,16 @@ import (
 
 var users = []*model.Register{
 	{
-		FirstName: "test",
-		LastName:  "ltest",
-		Username:  "test01@test.com",
-		Password:  "test1234",
+		FirstName: "admin",
+		LastName:  "admin",
+		Username:  "admin@admin.com",
+		Password:  "password",
 	},
 	{
-		FirstName: "test2",
-		LastName:  "ltest2",
-		Username:  "test02@test.com",
-		Password:  "test1234",
+		FirstName: "test",
+		LastName:  "testaccount",
+		Username:  "test@test.com",
+		Password:  "testpassword",
 	},
 }
 
