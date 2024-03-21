@@ -12,7 +12,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o ./bin/main.exe ./app/main.go
+RUN go build -x -o ./tmp/main.exe ./app/main.go
 
 EXPOSE 8000
 
