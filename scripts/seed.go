@@ -16,6 +16,7 @@ var db *gorm.DB
 
 func main() {
 	config.InitConfig()
+	createDatabase()
 	var err error
 	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable TimeZone=Asia/Bangkok",
 		viper.GetString("db.host"),
@@ -47,4 +48,20 @@ func main() {
 	mock.SeedUser(db)
 	mock.SeedCustomer(db)
 	println("Seeded database")
+}
+func createDatabase() {
+
+	dsn := fmt.Sprintf("host=%v user=%v password=%v port=%v sslmode=disable TimeZone=Asia/Bangkok",
+		viper.GetString("db.host"),
+		viper.GetString("db.username"),
+		viper.GetString("db.password"),
+		viper.GetString("db.port"),
+	)
+
+	db, _ := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	createDatabase := fmt.Sprintf("CREATE DATABASE %s", viper.GetString("db.database"))
+	db.Exec(createDatabase)
+	println("create database")
+
 }

@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  web:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,5 +8,5 @@ services:
       - 8000:8000
     volumes:
       - ./:/app
-extra_hosts:
-  - "host.docker.internal:host-gateway"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

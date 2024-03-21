@@ -1,4 +1,4 @@
-FROM golang:1.21.3-alpine
+FROM golang:1.22-alpine
 
 # RUN apt updatge && apt update -y && \ apt install -y git \ make openssh-client
 
